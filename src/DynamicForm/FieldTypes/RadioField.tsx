@@ -20,12 +20,9 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
   const [loading, setLoading] = useState(false);
   const isDarkMode = field.theme === "dark";
 
-  // Clear any pending debounce timer on unmount
   React.useEffect(() => {
     return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
   }, []);
 
@@ -38,6 +35,15 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
     rules: { required: field.required }
   });
 
+  const getAutoErrorMessage = (error: any): string => {
+    switch (error?.type) {
+      case "required":
+        return `${field.label} is required`;
+      default:
+        return "Invalid selection";
+    }
+  };
+
   const wrapperStyle = field.wrapperStyle ?? { marginBottom: "1rem" };
   const labelStyle = field.labelStyle ?? {
     display: "block",
@@ -46,6 +52,7 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
     fontSize: "14px",
     color: isDarkMode ? "#e5e7eb" : "#333"
   };
+
   const radioGroupStyle = field.radioGroupStyle ?? {
     display: "flex",
     flexDirection: field.inline ? "row" : "column",
@@ -53,6 +60,7 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
     alignItems: field.inline ? "center" : "flex-start",
     flexWrap: field.inline ? "wrap" : "nowrap"
   };
+
   const radioInputStyle = {
     width: "16px",
     height: "16px",
@@ -61,11 +69,13 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
     transition: "all 0.2s ease",
     ...field.inputStyle
   };
+
   const helpTextStyle = field.helpTextStyle ?? {
     fontSize: "12px",
     color: isDarkMode ? "#9ca3af" : "#6b7280",
     marginTop: "4px"
   };
+
   const errorStyle = field.errorStyle ?? {
     color: "#d93025",
     marginTop: "6px",
@@ -79,6 +89,10 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
     controllerField.onChange(value);
     field.onChange?.(event);
     field.onValueChange?.(value, { setValue, getValues, trigger });
+
+    if ((error || fieldError) && field.showErrorOnBlur) {
+      trigger(name); // clear error when fixed
+    }
 
     if (field.onValueChangeDebounced) {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
@@ -133,6 +147,9 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
                   value={option.value}
                   checked={isSelected}
                   onChange={(e) => handleChange(e.target.value, e)}
+                  onBlur={() => {
+                    if (field.showErrorOnBlur) trigger(name);
+                  }}
                   className={field.inputClass}
                   style={radioInputStyle}
                   disabled={field.disabled || option.disabled}
@@ -181,7 +198,10 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
 
       {(error || fieldError) && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {(error || fieldError)?.message || "This field is required"}
+          {field.errorText ||
+            field.getErrorMessage?.(error || fieldError) ||
+            (error || fieldError)?.message ||
+            getAutoErrorMessage(error || fieldError)}
         </p>
       )}
     </div>

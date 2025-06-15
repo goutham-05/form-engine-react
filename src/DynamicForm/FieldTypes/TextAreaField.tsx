@@ -32,12 +32,9 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Clear any pending debounce timer on unmount
   React.useEffect(() => {
     return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
   }, []);
 
@@ -80,6 +77,21 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
     color: "#6b7280"
   };
 
+  const getAutoErrorMessage = (error: any): string => {
+    switch (error?.type) {
+      case "required":
+        return `${field.label} is required`;
+      case "minLength":
+        return `${field.label} must be at least ${field.validation?.minLength?.value} characters`;
+      case "maxLength":
+        return `${field.label} must be at most ${field.validation?.maxLength?.value} characters`;
+      case "pattern":
+        return `${field.label} format is invalid`;
+      default:
+        return "Invalid value";
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     controllerField.onChange(e);
@@ -87,6 +99,10 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
 
     if (field.onValueChange) {
       field.onValueChange(value, { setValue, getValues, trigger });
+    }
+
+    if (error && field.showErrorOnBlur) {
+      trigger(name); // revalidate to auto-hide error when fixed
     }
 
     if (field.onValueChangeDebounced) {
@@ -145,6 +161,9 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
           onBlur={(e) => {
             controllerField.onBlur();
             field.onBlur?.(e as unknown as React.FocusEvent<HTMLInputElement>);
+            if (field.showErrorOnBlur) {
+              trigger(name); // validate on blur
+            }
           }}
           className={field.inputClass ?? ""}
           style={inputStyle}
@@ -160,10 +179,7 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
         <p
           id={`${name}-description`}
           className={field.helpTextClass ?? ""}
-          style={{
-            ...helpTextStyle,
-            marginLeft: "0"
-          }}
+          style={{ ...helpTextStyle, marginLeft: "0" }}
         >
           {field.helpText}
         </p>
@@ -190,7 +206,10 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
 
       {error && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {error.message || "This field is required"}
+          {field.errorText ||
+            field.getErrorMessage?.(error) ||
+            error.message ||
+            getAutoErrorMessage(error)}
         </p>
       )}
     </div>

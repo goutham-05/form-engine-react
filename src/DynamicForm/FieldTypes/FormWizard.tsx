@@ -61,6 +61,12 @@ const FormWizard: React.FC<FormWizardProps> = ({
       } else {
         methods.handleSubmit(onSubmit)();
       }
+    } else {
+      const firstErrorKey = Object.keys(methods.formState.errors)[0];
+      const el = document.getElementById(firstErrorKey);
+      if (el && typeof el.scrollIntoView === "function") {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }
   };
 
@@ -91,7 +97,6 @@ const FormWizard: React.FC<FormWizardProps> = ({
       >
         {showProgress && (
           <div style={{ marginBottom: "2rem", ...progressStyle }}>
-            {/* Stepper progress bar */}
             <div
               style={{
                 display: "flex",
@@ -163,7 +168,6 @@ const FormWizard: React.FC<FormWizardProps> = ({
           </div>
         )}
 
-        {/* Step fields */}
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
           style={{ marginBottom: "0" }}
@@ -176,7 +180,6 @@ const FormWizard: React.FC<FormWizardProps> = ({
           </div>
         </form>
 
-        {/* Navigation buttons */}
         <div
           style={{
             marginTop: "2rem",

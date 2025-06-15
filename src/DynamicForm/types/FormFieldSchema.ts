@@ -27,6 +27,15 @@ export interface FormFieldSchema {
   /** Input placeholder text */
   placeholder?: string;
 
+  /** Whether to show error on blur instead of change */
+  showErrorOnBlur?: boolean;
+
+  /** Optional custom error message (overrides validation error messages) */
+  errorText?: string;
+
+  /** Optional dynamic error formatter */
+  getErrorMessage?: (error: any) => string;
+
   /** Delay in milliseconds for debounced change handler */
   debounceMs?: number;
 

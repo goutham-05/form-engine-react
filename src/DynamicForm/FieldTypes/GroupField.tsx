@@ -15,11 +15,18 @@ export function getErrorMessage(
     | string
     | FieldError
     | Merge<FieldError, FieldErrorsImpl<any>>
-    | undefined
+    | undefined,
+  field?: FormFieldSchema
 ): string {
   if (!error) return "";
 
+  if (field?.errorText) return field.errorText;
+
   if (typeof error === "string") return error;
+
+  if (field?.getErrorMessage && typeof field.getErrorMessage === "function") {
+    return field.getErrorMessage(error);
+  }
 
   if (typeof error === "object") {
     if ("message" in error && typeof error.message === "string") {
@@ -32,7 +39,7 @@ export function getErrorMessage(
     }
   }
 
-  return "Field validation error";
+  return `${field?.label || "Field"} is invalid`;
 }
 
 interface GroupFieldProps {
@@ -47,7 +54,7 @@ const GroupFieldComponent: React.FC<GroupFieldProps> = ({
   name,
   error
 }) => {
-  const { control } = useFormContext();
+  const { control, trigger } = useFormContext();
 
   const {
     field: groupField,
@@ -85,7 +92,6 @@ const GroupFieldComponent: React.FC<GroupFieldProps> = ({
     color: isDarkMode ? "#9ca3af" : "#6b7280"
   };
 
-  // Prevent unnecessary loop
   useEffect(() => {
     const hasChanged =
       JSON.stringify(watchedGroupValue) !== JSON.stringify(groupField.value);
@@ -94,7 +100,6 @@ const GroupFieldComponent: React.FC<GroupFieldProps> = ({
 
   return (
     <div className={field.wrapperClass ?? ""} style={wrapperStyle}>
-      {/* ✅ Render checkboxLabel if provided */}
       {(field.checkboxLabel ?? field.label) && (
         <label
           htmlFor={name}
@@ -131,7 +136,7 @@ const GroupFieldComponent: React.FC<GroupFieldProps> = ({
 
       {(error || groupError) && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {getErrorMessage(error || groupError)}
+          {getErrorMessage(error || groupError, field)}
         </p>
       )}
     </div>

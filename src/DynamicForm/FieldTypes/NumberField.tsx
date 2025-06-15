@@ -33,14 +33,26 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({
   const isDarkMode = field.theme === "dark";
   const isNumberField = field.type === "number";
 
-  // Clear any pending debounce timer on unmount
   React.useEffect(() => {
     return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
   }, []);
+
+  const getAutoErrorMessage = (error: any): string => {
+    switch (error?.type) {
+      case "required":
+        return `${field.label} is required`;
+      case "minLength":
+        return `${field.label} must be at least ${field.validation?.minLength?.value} digits`;
+      case "maxLength":
+        return `${field.label} must be at most ${field.validation?.maxLength?.value} digits`;
+      case "pattern":
+        return `${field.label} format is invalid`;
+      default:
+        return "Invalid value";
+    }
+  };
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +63,10 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({
 
       if (field.onValueChange) {
         field.onValueChange(value, { setValue, getValues, trigger });
+      }
+
+      if (error && field.showErrorOnBlur) {
+        trigger(name); // revalidate if fixing error
       }
 
       if (field.onValueChangeDebounced) {
@@ -66,8 +82,24 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({
         }, field.debounceMs ?? 500);
       }
     },
-    [controllerField, field, isNumberField, setValue, getValues, trigger]
+    [
+      controllerField,
+      field,
+      isNumberField,
+      setValue,
+      getValues,
+      trigger,
+      error,
+      name
+    ]
   );
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    field.onBlur?.(e);
+    if (field.showErrorOnBlur) {
+      trigger(name);
+    }
+  };
 
   const getDefaultInputStyle = (
     isDark: boolean,
@@ -136,6 +168,7 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({
         aria-describedby={field.helpText ? `${name}-description` : undefined}
         value={controllerField.value ?? ""}
         onChange={handleChange}
+        onBlur={handleBlur}
         onKeyDown={(e) => {
           if (field.allowedPattern) {
             const char = e.key;
@@ -172,7 +205,10 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({
 
       {error && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {error.message || "This field is required"}
+          {field.errorText ||
+            field.getErrorMessage?.(error) ||
+            error.message ||
+            getAutoErrorMessage(error)}
         </p>
       )}
     </div>

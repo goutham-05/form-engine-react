@@ -52,6 +52,10 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({
         field.onValueChange(value, { setValue, getValues, trigger });
       }
 
+      if (error && field.showErrorOnBlur) {
+        trigger(name);
+      }
+
       if (field.onValueChangeDebounced) {
         if (debounceTimer.current) clearTimeout(debounceTimer.current);
         setLoading(true);
@@ -117,6 +121,21 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({
 
   const LabelIcon = field.icon ?? null;
 
+  const getAutoErrorMessage = (error: any): string => {
+    switch (error?.type) {
+      case "required":
+        return `${field.label} is required`;
+      case "minLength":
+        return `${field.label} must be at least ${field.validation?.minLength?.value} characters`;
+      case "maxLength":
+        return `${field.label} must be at most ${field.validation?.maxLength?.value} characters`;
+      case "pattern":
+        return `${field.label} format is invalid`;
+      default:
+        return "Invalid value";
+    }
+  };
+
   return (
     <div className={field.wrapperClass ?? ""} style={wrapperStyle}>
       <label
@@ -152,6 +171,12 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({
         minLength={field.minLength}
         maxLength={field.maxLength}
         onChange={handleChange}
+        onBlur={(e) => {
+          field.onBlur?.(e);
+          if (field.showErrorOnBlur) {
+            trigger(name);
+          }
+        }}
         onKeyDown={(e) => {
           if (field.allowedPattern) {
             const char = e.key;
@@ -186,7 +211,10 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({
 
       {error && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {error.message || "This field is required"}
+          {field.errorText ||
+            field.getErrorMessage?.(error) ||
+            error.message ||
+            getAutoErrorMessage(error)}
         </p>
       )}
     </div>

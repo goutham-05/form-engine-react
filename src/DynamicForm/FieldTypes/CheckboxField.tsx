@@ -19,12 +19,9 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
   const [loading, setLoading] = useState(false);
   const isDarkMode = field.theme === "dark";
 
-  // Clear any pending debounce timer on unmount
   React.useEffect(() => {
     return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
   }, []);
 
@@ -41,37 +38,13 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
     }
   });
 
-  const inputStyle = {
-    width: "16px",
-    height: "16px",
-    accentColor: "#004DB2",
-    cursor: field.disabled ? "not-allowed" : "pointer",
-    ...field.inputStyle
-  };
-  const labelStyle = field.labelStyle ?? {
-    fontSize: "14px",
-    color: isDarkMode ? "#e5e7eb" : "#333"
-  };
-  const helpTextStyle = field.helpTextStyle ?? {
-    fontSize: "12px",
-    marginTop: "4px",
-    color: isDarkMode ? "#9ca3af" : "#6b7280"
-  };
-  const errorStyle = field.errorStyle ?? {
-    color: "#d93025",
-    marginTop: "6px",
-    fontSize: "13px"
-  };
-  const wrapperStyle = field.wrapperStyle ?? { marginBottom: "1rem" };
-  const optionWrapperStyle = field.optionWrapperStyle ?? {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px"
-  };
-  const checkBoxGroupStyle = field.checkBoxGroupStyle ?? {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.75rem"
+  const getAutoErrorMessage = (error: any): string => {
+    switch (error?.type) {
+      case "required":
+        return `${field.label} is required`;
+      default:
+        return "Invalid selection";
+    }
   };
 
   const handleDebounced = (value: any) => {
@@ -104,6 +77,49 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
     field.onChange?.(e);
     field.onValueChange?.(newValue, { setValue, getValues, trigger });
     handleDebounced(newValue);
+
+    if ((error || controllerError) && field.showErrorOnBlur) {
+      trigger(name); // clear error once fixed
+    }
+  };
+
+  const inputStyle = {
+    width: "16px",
+    height: "16px",
+    accentColor: "#004DB2",
+    cursor: field.disabled ? "not-allowed" : "pointer",
+    ...field.inputStyle
+  };
+
+  const labelStyle = field.labelStyle ?? {
+    fontSize: "14px",
+    color: isDarkMode ? "#e5e7eb" : "#333"
+  };
+
+  const helpTextStyle = field.helpTextStyle ?? {
+    fontSize: "12px",
+    marginTop: "4px",
+    color: isDarkMode ? "#9ca3af" : "#6b7280"
+  };
+
+  const errorStyle = field.errorStyle ?? {
+    color: "#d93025",
+    marginTop: "6px",
+    fontSize: "13px"
+  };
+
+  const wrapperStyle = field.wrapperStyle ?? { marginBottom: "1rem" };
+
+  const optionWrapperStyle = field.optionWrapperStyle ?? {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px"
+  };
+
+  const checkBoxGroupStyle = field.checkBoxGroupStyle ?? {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem"
   };
 
   const isGroup = !!field.options?.length;
@@ -152,6 +168,9 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
                     value={opt.value}
                     checked={isChecked}
                     onChange={(e) => handleChange(e, opt.value)}
+                    onBlur={() => {
+                      if (field.showErrorOnBlur) trigger(name);
+                    }}
                     className={field.inputClass ?? ""}
                     style={inputStyle}
                     disabled={field.disabled || opt.disabled}
@@ -189,6 +208,9 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
               style={inputStyle}
               checked={!!controllerField.value}
               onChange={(e) => handleChange(e)}
+              onBlur={() => {
+                if (field.showErrorOnBlur) trigger(name);
+              }}
               disabled={field.disabled}
               aria-describedby={
                 field.helpText ? `${name}-description` : undefined
@@ -211,7 +233,10 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
 
       {(error || controllerError) && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {(error || controllerError)?.message || "This field is required"}
+          {field.errorText ||
+            field.getErrorMessage?.(error || controllerError) ||
+            (error || controllerError)?.message ||
+            getAutoErrorMessage(error || controllerError)}
         </p>
       )}
     </div>

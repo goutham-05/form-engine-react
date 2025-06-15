@@ -15,7 +15,10 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
   error
 }) => {
   const { control, setValue, getValues, trigger } = useFormContext();
-  const { field: controllerField } = useController({
+  const {
+    field: controllerField,
+    fieldState: { error: fieldError }
+  } = useController({
     name,
     control,
     defaultValue: field.defaultValue ?? "",
@@ -27,7 +30,6 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  // Fetch dynamic options if needed
   useEffect(() => {
     let isMounted = true;
     const updateOptions = async () => {
@@ -56,6 +58,38 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
     };
   }, [field, parentValue]);
 
+  const getAutoErrorMessage = (error: any): string => {
+    switch (error?.type) {
+      case "required":
+        return `${field.label} is required`;
+      default:
+        return "Invalid selection";
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    controllerField.onChange(value);
+    field.onChange?.(e as unknown as React.ChangeEvent<HTMLInputElement>);
+    field.onValueChange?.(value, { setValue, getValues, trigger });
+    field.onValueChangeDebounced?.(value, {
+      setValue,
+      getValues,
+      trigger
+    });
+
+    // Clear error on change if needed
+    if ((error || fieldError) && field.showErrorOnBlur) {
+      trigger(name);
+    }
+  };
+
+  const handleBlur = () => {
+    if (field.showErrorOnBlur) {
+      trigger(name);
+    }
+  };
+
   const wrapperStyle = field.wrapperStyle ?? { marginBottom: "1rem" };
   const labelStyle = field.labelStyle ?? {
     display: "block",
@@ -67,7 +101,7 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
   const selectStyle = {
     padding: "10px",
     border: "1px solid",
-    borderColor: error ? "#f87171" : "#ccc",
+    borderColor: error || fieldError ? "#f87171" : "#ccc",
     borderRadius: "6px",
     fontSize: "14px",
     width: "100%",
@@ -93,12 +127,10 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
     color: "#6b7280"
   };
 
-  // ---- Find selected option to show extra helpText below ----
   const selectedOption = dynamicOptions.find(
     (opt) => opt.value === controllerField.value
   );
 
-  // Custom renderer support
   if (typeof field.render === "function") {
     return field.render({
       name,
@@ -123,24 +155,13 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
         <select
           id={name}
           {...controllerField}
-          onChange={(e) => {
-            const value = e.target.value;
-            controllerField.onChange(value);
-            field.onChange?.(
-              e as unknown as React.ChangeEvent<HTMLInputElement>
-            );
-            field.onValueChange?.(value, { setValue, getValues, trigger });
-            field.onValueChangeDebounced?.(value, {
-              setValue,
-              getValues,
-              trigger
-            });
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
           className={field.inputClass ?? ""}
           style={selectStyle}
           disabled={field.disabled || loading}
           aria-describedby={field.helpText ? `${name}-description` : undefined}
-          aria-invalid={!!error}
+          aria-invalid={!!(error || fieldError)}
         >
           <option value="">{loading ? "Loading..." : "Select..."}</option>
           {dynamicOptions.map((opt) => (
@@ -148,12 +169,13 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
               key={opt.value}
               value={opt.value}
               disabled={opt.disabled}
-              title={opt.tooltip} // native browser tooltip!
+              title={opt.tooltip}
             >
               {opt.label}
             </option>
           ))}
         </select>
+
         <span
           style={{
             position: "absolute",
@@ -170,7 +192,6 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
         </span>
       </div>
 
-      {/* Show global helpText, if present */}
       {field.helpText && (
         <p
           id={`${name}-description`}
@@ -181,7 +202,6 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
         </p>
       )}
 
-      {/* Show helpText for selected option, if any */}
       {selectedOption?.helpText && (
         <div style={{ ...helpTextStyle, marginTop: "2px" }}>
           {selectedOption.helpText}
@@ -194,9 +214,12 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
         </p>
       )}
 
-      {error && (
+      {(error || fieldError) && (
         <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {error.message || "This field is required"}
+          {field.errorText ||
+            field.getErrorMessage?.(error || fieldError) ||
+            (error || fieldError)?.message ||
+            getAutoErrorMessage(error || fieldError)}
         </p>
       )}
     </div>
