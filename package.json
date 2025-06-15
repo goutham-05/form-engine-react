@@ -1,0 +1,73 @@
+{
+  "name": "form-engine-react",
+  "version": "1.0.0",
+  "description": "A schema-driven dynamic form builder for React",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest"
+  },
+  "keywords": [
+    "react",
+    "form",
+    "form-builder",
+    "dynamic-form",
+    "form-generator",
+    "react-form",
+    "react-hook-form",
+    "zod",
+    "json-schema",
+    "form-wizard",
+    "form stepper",
+    "multi-step-form",
+    "wizard",
+    "form designer",
+    "form creator",
+    "form schema",
+    "conditional fields",
+    "custom fields",
+    "form-validation",
+    "dynamic-fields",
+    "schema-driven",
+    "typescript",
+    "admin-panel",
+    "form library"
+  ],
+  "author": "Goutham Posannapeta",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.5",
+    "eslint": "^9.27.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.56.4",
+    "zod": "^3.25.28"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-hook-form": "^7.0.0",
+    "zod": "^3.0.0"
+  }
+}
