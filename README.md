@@ -21,9 +21,9 @@ A flexible, schema-driven dynamic form builder for React powered by [React Hook 
 ## 📦 Installation
 
 ```bash
-npm install form-engine-react
+npm install @goutham1494/form-engine
 # or
-yarn add form-engine-react
+yarn add @goutham1494/form-engine
 ```
 
 ---
@@ -38,7 +38,7 @@ import {
   DynamicForm,
   FIELD_TYPES,
   type FormFieldSchema
-} from "form-engine-react";
+} from "@goutham1494/form-engine";
 
 const schema: FormFieldSchema[] = [
   {
@@ -76,7 +76,7 @@ export default function App() {
 
 ```tsx
 import React from "react";
-import { FormWizard, FIELD_TYPES } from "dynamic-form-form-engine-react";
+import { FormWizard, FIELD_TYPES } from "@goutham1494/form-engine";
 
 const steps = [
   {

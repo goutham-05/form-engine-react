@@ -1,6 +1,6 @@
 {
-  "name": "form-engine-react",
-  "version": "1.0.0",
+  "name": "@goutham1494/form-engine",
+  "version": "1.0.10",
   "description": "A schema-driven dynamic form builder for React",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
