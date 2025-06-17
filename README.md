@@ -21,9 +21,9 @@ A flexible, schema-driven dynamic form builder for React powered by [React Hook 
 ## 📦 Installation
 
 ```bash
-npm install @goutham1494/form-engine
+npm install form-engine-react
 # or
-yarn add @goutham1494/form-engine
+yarn add form-engine-react
 ```
 
 ---
@@ -38,7 +38,7 @@ import {
   DynamicForm,
   FIELD_TYPES,
   type FormFieldSchema
-} from "@goutham1494/form-engine";
+} from "form-engine-react";
 
 const schema: FormFieldSchema[] = [
   {
@@ -76,7 +76,7 @@ export default function App() {
 
 ```tsx
 import React from "react";
-import { FormWizard, FIELD_TYPES } from "@goutham1494/form-engine";
+import { FormWizard, FIELD_TYPES } from "form-engine-react";
 
 const steps = [
   {
@@ -185,61 +185,202 @@ export const schema = [
 
 ## 👩‍🎨 CSS Example
 
-```css
-.df-form {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.1);
-  padding: 2rem 1.5rem;
-  max-width: 420px;
-  margin: 2rem auto;
-  font-family: "Inter", system-ui, sans-serif;
+```js
+import {
+  DynamicForm,
+  FIELD_TYPES,
+  type FormFieldSchema
+} from "@goutham1494/form-engine";
+
+export const signupFormSchema: FormFieldSchema[] = [
+  {
+    name: "firstName",
+    label: "First Name",
+    type: FIELD_TYPES.TEXT,
+    required: true,
+    placeholder: "Enter your first name",
+    helpText: "Your given name",
+    wrapperStyle: { marginBottom: 24 },
+    labelStyle: { fontWeight: 600, fontSize: "1rem", color: "#374151" },
+    inputStyle: {
+      background: "#f9fafb",
+      borderRadius: 8,
+      padding: "12px 14px",
+      border: "1px solid #d1d5db",
+      width: "100%"
+    },
+    errorStyle: { color: "#dc2626", fontSize: "0.875rem" }
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    type: FIELD_TYPES.TEXT,
+    required: true,
+    placeholder: "Enter your last name",
+    helpText: "Your family name",
+    wrapperStyle: { marginBottom: 24 },
+    labelStyle: { fontWeight: 600, fontSize: "1rem", color: "#374151" },
+    inputStyle: {
+      background: "#f9fafb",
+      borderRadius: 8,
+      padding: "12px 14px",
+      border: "1px solid #d1d5db",
+      width: "100%"
+    },
+    errorStyle: { color: "#dc2626", fontSize: "0.875rem" }
+  },
+  {
+    name: "email",
+    label: "Email Address",
+    type: FIELD_TYPES.EMAIL,
+    required: true,
+    placeholder: "you@example.com",
+    helpText: "We'll never share your email.",
+    inputMode: "email",
+    validation: {
+      pattern: {
+        value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+        message: "Invalid email format"
+      }
+    },
+    wrapperStyle: { marginBottom: 24 },
+    labelStyle: { fontWeight: 600, fontSize: "1rem", color: "#374151" },
+    inputStyle: {
+      background: "#f9fafb",
+      borderRadius: 8,
+      padding: "12px 14px",
+      border: "1px solid #d1d5db",
+      width: "100%"
+    },
+    errorStyle: { color: "#dc2626", fontSize: "0.875rem" }
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: FIELD_TYPES.TEXT,
+    helpText: "Must be at least 6 characters",
+    required: true,
+    placeholder: "Create a password",
+    inputMode: "text",
+    validation: {
+      minLength: {
+        value: 6,
+        message: "Password must be at least 6 characters"
+      }
+    },
+    wrapperStyle: { marginBottom: 24 },
+    labelStyle: { fontWeight: 600, fontSize: "1rem", color: "#374151" },
+    inputStyle: {
+      background: "#f9fafb",
+      borderRadius: 8,
+      padding: "12px 14px",
+      border: "1px solid #d1d5db",
+      width: "100%"
+    },
+    errorStyle: { color: "#dc2626", fontSize: "0.875rem" }
+  },
+  {
+    name: "confirmPassword",
+    label: "Confirm Password",
+    type: FIELD_TYPES.TEXT,
+    required: true,
+    placeholder: "Re-enter password",
+    inputMode: "text",
+    validation: {
+      custom: (value: any, allValues: any) =>
+        value === allValues.password || "Passwords do not match"
+    },
+    wrapperStyle: { marginBottom: 24 },
+    labelStyle: { fontWeight: 600, fontSize: "1rem", color: "#374151" },
+    inputStyle: {
+      background: "#f9fafb",
+      borderRadius: 8,
+      padding: "12px 14px",
+      border: "1px solid #d1d5db",
+      width: "100%"
+    },
+    errorStyle: { color: "#dc2626", fontSize: "0.875rem" }
+  },
+  {
+    name: "terms",
+    checkboxLabel: "",
+    label: "I agree to the Terms and Privacy Policy",
+    type: FIELD_TYPES.CHECKBOX,
+    required: true,
+    wrapperStyle: {
+      marginTop: 24,
+      gridColumn: "1 / -1"
+    },
+    labelStyle: {
+      fontWeight: 500,
+      fontSize: "0.95rem",
+      color: "#374151"
+    },
+    checkboxGroupClass: "signup-terms-checkbox-group",
+    errorStyle: {
+      color: "#dc2626",
+      fontSize: "0.875rem"
+    }
+  }
+];
+export default function App() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #f5f7fa, #e0ecf8)",
+        padding: "60px 16px"
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 480,
+          width: "100%",
+          background: "#ffffff",
+          borderRadius: 20,
+          boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
+          padding: "48px 40px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 40
+        }}
+      >
+        <h2
+          style={{
+            margin: 0,
+            fontSize: "2.25rem",
+            fontWeight: 700,
+            color: "#1976d2",
+            textAlign: "center"
+          }}
+        >
+          Register Your Account
+        </h2>
+
+        <div style={{ marginTop: 8 }}>
+          <DynamicForm
+            schema={signupFormSchema}
+            onSubmit={(values) => console.log("submitted", values)}
+            showReset
+            resetLabel="Cancel"
+            submitLabel="Create"
+            extraActions={[
+              {
+                label: "Save as Draft",
+                onClick: () => alert("Draft saved"),
+                style: { background: "#f3f4f6", color: "#111827" }
+              }
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
-.df-field-label {
-  font-weight: 500;
-  margin-bottom: 0.35rem;
-  color: #1e293b;
-}
-.df-input,
-.df-textarea,
-.df-select {
-  width: 100%;
-  padding: 0.7rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #cbd5e1;
-  font-size: 1rem;
-  background: #f9fafb;
-  transition: border 0.2s;
-}
-.df-input:focus,
-.df-textarea:focus,
-.df-select:focus {
-  border-color: #6366f1;
-  background: #fff;
-}
-.df-checkbox,
-.df-radio {
-  accent-color: #6366f1;
-  margin-right: 0.5rem;
-}
-.df-btn {
-  padding: 0.8rem 1.2rem;
-  border-radius: 0.5rem;
-  background: #6366f1;
-  color: #fff;
-  font-weight: 600;
-}
-.df-btn:active {
-  background: #4338ca;
-}
-.df-btn.df-btn-reset {
-  background: #f1f5f9;
-  color: #334155;
-}
-.df-error {
-  color: #ef4444;
-  font-size: 0.93rem;
-}
+
 ```
 
 ## 🙌 Contributing

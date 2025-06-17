@@ -10,7 +10,12 @@ interface DynamicFormProps {
   formClassName?: string;
   buttonStyle?: React.CSSProperties;
   buttonClassName?: string;
+  submitButtonStyle?: React.CSSProperties;
+  submitButtonClassName?: string;
+  resetButtonStyle?: React.CSSProperties;
+  resetButtonClassName?: string;
   submitLabel?: string;
+  resetLabel?: string;
   hideSubmitButton?: boolean;
   children?: React.ReactNode;
   showReset?: boolean;
@@ -18,6 +23,15 @@ interface DynamicFormProps {
   columns?: number;
   gap?: string;
   maxWidth?: number | string;
+
+  extraActions?: {
+    label: string;
+    onClick: () => void;
+    type?: "button" | "submit" | "reset";
+    style?: React.CSSProperties;
+    className?: string;
+    icon?: React.ReactNode;
+  }[];
 }
 
 const defaultButtonStyle: React.CSSProperties = {
@@ -48,9 +62,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onSubmit,
   formStyle,
   formClassName,
-  buttonStyle,
-  buttonClassName,
+  submitButtonStyle,
+  submitButtonClassName,
+  resetButtonStyle,
+  resetButtonClassName,
   submitLabel = "Submit",
+  resetLabel = "Reset",
+  extraActions,
   hideSubmitButton = false,
   children,
   showReset = false,
@@ -103,37 +121,59 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
               gap: "1rem"
             }}
           >
-            {showReset && (
-              <button
-                type="button"
+            {(showReset || !hideSubmitButton || extraActions?.length) && (
+              <div
                 style={{
-                  ...defaultButtonStyle,
-                  background: "#e5e7eb",
-                  color: "#111827"
-                }}
-                className={buttonClassName}
-                onClick={() => {
-                  methods.reset();
-                  onReset?.();
+                  gridColumn: "1 / -1",
+                  marginTop: "1rem",
+                  display: "flex",
+                  gap: "1rem",
+                  flexWrap: "wrap"
                 }}
               >
-                Reset
-              </button>
-            )}
-            {!hideSubmitButton && (
-              <button
-                type="submit"
-                style={{ ...defaultButtonStyle, ...buttonStyle }}
-                className={buttonClassName}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.background = "#1d4ed8")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.background = "#2563eb")
-                }
-              >
-                {submitLabel}
-              </button>
+                {extraActions?.map((action, index) => (
+                  <button
+                    key={`extra-btn-${index}`}
+                    type={action.type ?? "button"}
+                    onClick={action.onClick}
+                    style={{ ...defaultButtonStyle, ...action.style }}
+                    className={action.className}
+                  >
+                    {action.icon && (
+                      <span style={{ marginRight: 8 }}>{action.icon}</span>
+                    )}
+                    {action.label}
+                  </button>
+                ))}
+                {showReset && (
+                  <button
+                    type="button"
+                    style={{ ...defaultButtonStyle, ...resetButtonStyle }}
+                    className={resetButtonClassName}
+                    onClick={() => {
+                      methods.reset();
+                      onReset?.();
+                    }}
+                  >
+                    {resetLabel}
+                  </button>
+                )}
+                {!hideSubmitButton && (
+                  <button
+                    type="submit"
+                    style={{ ...defaultButtonStyle, ...submitButtonStyle }}
+                    className={submitButtonClassName}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.background = "#1d4ed8")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.background = "#2563eb")
+                    }
+                  >
+                    {submitLabel}
+                  </button>
+                )}
+              </div>
             )}
           </div>
         )}
