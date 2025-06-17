@@ -190,7 +190,7 @@ import {
   DynamicForm,
   FIELD_TYPES,
   type FormFieldSchema
-} from "@goutham1494/form-engine";
+} from "form-engine-react";
 
 export const signupFormSchema: FormFieldSchema[] = [
   {
