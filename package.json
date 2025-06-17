@@ -1,6 +1,6 @@
 {
   "name": "form-engine-react",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A schema-driven dynamic form builder for React",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -15,6 +15,14 @@
       "require": "./dist/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goutham-05/form-engine-react"
+  },
+  "bugs": {
+    "url": "https://github.com/goutham-05/form-engine-react/issues"
+  },
+  "homepage": "https://github.com/goutham-05/form-engine-react#readme",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
