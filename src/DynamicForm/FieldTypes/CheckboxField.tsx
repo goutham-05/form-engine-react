@@ -79,7 +79,7 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
     handleDebounced(newValue);
 
     if ((error || controllerError) && field.showErrorOnBlur) {
-      trigger(name); // clear error once fixed
+      trigger(name);
     }
   };
 

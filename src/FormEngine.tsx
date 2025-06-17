@@ -27,7 +27,6 @@ const BaseFieldRenderer: React.FC<Props> = ({ field, parentName }) => {
   const error = resolveNestedValue(formState.errors, qualifiedFieldName);
   const formValues = useWatch({ control });
 
-  // 🔍 Visibility evaluation
   let shouldRenderField = true;
 
   if (field.visibleWhen?.conditions?.length) {
@@ -62,7 +61,6 @@ const BaseFieldRenderer: React.FC<Props> = ({ field, parentName }) => {
       logic === "AND" ? results.every(Boolean) : results.some(Boolean);
   }
 
-  // 🧹 Clear value if not visible and not preserved
   useEffect(() => {
     if (!shouldRenderField && !field.preserveValue) {
       const existing = resolveNestedValue(getValues(), qualifiedFieldName);
@@ -82,7 +80,6 @@ const BaseFieldRenderer: React.FC<Props> = ({ field, parentName }) => {
 
   if (!shouldRenderField) return null;
 
-  // 📦 Common props
   const sharedFieldProps = {
     field,
     name: qualifiedFieldName,
@@ -112,7 +109,6 @@ const BaseFieldRenderer: React.FC<Props> = ({ field, parentName }) => {
     );
   }
 
-  // 🧩 Field type rendering
   switch (field.type) {
     case "text":
     case "email":

@@ -8,7 +8,7 @@ export default defineConfig({
   splitting: false,
   clean: true,
   outDir: "dist",
-  legacyOutput: false, // Disabled for modern output
+  legacyOutput: false, 
   esbuildOptions(options, context) {
     if (context.format === "esm") {
       options.outExtension = { ".js": ".mjs" };

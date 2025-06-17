@@ -91,7 +91,7 @@ const RadioFieldComponent: React.FC<RadioFieldProps> = ({
     field.onValueChange?.(value, { setValue, getValues, trigger });
 
     if ((error || fieldError) && field.showErrorOnBlur) {
-      trigger(name); // clear error when fixed
+      trigger(name);
     }
 
     if (field.onValueChangeDebounced) {

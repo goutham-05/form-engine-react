@@ -102,7 +102,7 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
     }
 
     if (error && field.showErrorOnBlur) {
-      trigger(name); // revalidate to auto-hide error when fixed
+      trigger(name);
     }
 
     if (field.onValueChangeDebounced) {
@@ -162,7 +162,7 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
             controllerField.onBlur();
             field.onBlur?.(e as unknown as React.FocusEvent<HTMLInputElement>);
             if (field.showErrorOnBlur) {
-              trigger(name); // validate on blur
+              trigger(name);
             }
           }}
           className={field.inputClass ?? ""}

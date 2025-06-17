@@ -78,7 +78,6 @@ const SelectFieldComponent: React.FC<SelectFieldProps> = ({
       trigger
     });
 
-    // Clear error on change if needed
     if ((error || fieldError) && field.showErrorOnBlur) {
       trigger(name);
     }

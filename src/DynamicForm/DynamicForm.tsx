@@ -88,10 +88,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
     return () => window.removeEventListener("resize", handler);
   }, []);
 
-  // Compute grid columns based on props or screen size
   const gridColumns = columns ?? (isMd ? 2 : 1);
 
-  // Merge default and user styles, with user styles taking precedence
   const mergedFormStyle: React.CSSProperties = {
     ...defaultFormStyle,
     gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,

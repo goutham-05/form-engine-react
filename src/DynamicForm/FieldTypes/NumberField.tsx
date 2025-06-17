@@ -66,7 +66,7 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({
       }
 
       if (error && field.showErrorOnBlur) {
-        trigger(name); // revalidate if fixing error
+        trigger(name);
       }
 
       if (field.onValueChangeDebounced) {

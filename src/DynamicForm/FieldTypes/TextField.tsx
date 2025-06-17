@@ -31,7 +31,6 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Clear any pending debounce timer on unmount
   React.useEffect(() => {
     return () => {
       if (debounceTimer.current) {
@@ -72,7 +71,6 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({
     [field, setValue, getValues, trigger, controllerField]
   );
 
-  // --- Styles (no dark mode) ---
   const wrapperStyle = field.wrapperStyle ?? { marginBottom: "1rem" };
   const labelStyle = field.labelStyle ?? {
     display: "flex",

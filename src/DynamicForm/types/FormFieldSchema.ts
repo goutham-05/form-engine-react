@@ -111,9 +111,9 @@ export interface FormFieldSchema {
     value: string;
     helpText?: string;
     disabled?: boolean;
-    icon?: React.ReactNode; // optional
+    icon?: React.ReactNode;
     tooltip?: string;
-    helpTextAlignment?: "underLabel" | "underButton"; // optional
+    helpTextAlignment?: "underLabel" | "underButton";
   }[];
 
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
