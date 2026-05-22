@@ -37,7 +37,7 @@ function Navbar({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold shadow-lg">
             ⬡
           </div>
-          <span className="font-semibold text-sm text-zinc-100 font-mono">form-engine-react</span>
+          <span className="font-semibold text-sm text-zinc-100 font-mono">ReactFill</span>
         </div>
 
         <div className="flex items-center gap-1 sm:gap-3">
@@ -60,7 +60,7 @@ function Navbar({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
             Docs
           </button>
           <a
-            href="https://www.npmjs.com/package/form-engine-react"
+            href="https://www.npmjs.com/package/react-fill"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/80 hover:bg-zinc-700/80 rounded-md transition-all border border-zinc-700/50"
@@ -152,8 +152,8 @@ function Hero({ onPlayground }: { onPlayground: () => void }) {
           style={{ animationDelay: "0.3s" }}
         >
           <span className="text-zinc-600 select-none mr-2">$</span>
-          <span>npm install form-engine-react</span>
-          <CopyButton text="npm install form-engine-react" />
+          <span>npm install react-fill</span>
+          <CopyButton text="npm install react-fill" />
         </div>
 
         {/* CTAs */}
@@ -268,7 +268,7 @@ function Features() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
           <p className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">
-            Why form-engine-react
+            Why ReactFill
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-zinc-100">
             Everything you need.
@@ -298,8 +298,8 @@ function Features() {
 
 // ─── Theme Showcase ────────────────────────────────────────────────────────────
 
-const TAILWIND_CODE = `import { DynamicForm } from "form-engine-react";
-import type { FormTheme } from "form-engine-react";
+const TAILWIND_CODE = `import { DynamicForm } from "react-fill";
+import type { FormTheme } from "react-fill";
 
 const theme: FormTheme = {
   unstyled: true,
@@ -321,8 +321,8 @@ const theme: FormTheme = {
 
 <DynamicForm schema={schema} theme={theme} onSubmit={fn} />`;
 
-const BOOTSTRAP_CODE = `import { DynamicForm } from "form-engine-react";
-import type { FormTheme } from "form-engine-react";
+const BOOTSTRAP_CODE = `import { DynamicForm } from "react-fill";
+import type { FormTheme } from "react-fill";
 
 const theme: FormTheme = {
   unstyled: true,
@@ -342,8 +342,8 @@ const theme: FormTheme = {
 
 <DynamicForm schema={schema} theme={theme} onSubmit={fn} />`;
 
-const MUI_CODE = `import { DynamicForm } from "form-engine-react";
-import type { FormTheme } from "form-engine-react";
+const MUI_CODE = `import { DynamicForm } from "react-fill";
+import type { FormTheme } from "react-fill";
 
 // No theme needed — use render prop for full MUI control:
 const schema = [
@@ -527,8 +527,8 @@ function tokenize(line: string): { text: string; cls: string }[] {
 
 // ─── How It Works ──────────────────────────────────────────────────────────────
 
-const STEP1 = `import { DynamicForm } from "form-engine-react";
-import type { FormFieldSchema } from "form-engine-react";`;
+const STEP1 = `import { DynamicForm } from "react-fill";
+import type { FormFieldSchema } from "react-fill";`;
 
 const STEP2 = `const schema: FormFieldSchema[] = [
   {
@@ -577,7 +577,7 @@ const STEP3 = `export default function MyForm() {
 
 function HowItWorks() {
   const steps = [
-    { n: "01", title: "Install", desc: "Add the package and its peer dependencies.", code: `npm install form-engine-react\n# react, react-dom, and react-hook-form\n# are peer dependencies`, lang: "bash" },
+    { n: "01", title: "Install", desc: "Add the package and its peer dependencies.", code: `npm install react-fill\n# react, react-dom, and react-hook-form\n# are peer dependencies`, lang: "bash" },
     { n: "02", title: "Define the schema", desc: "Describe your fields as a plain array. No JSX, no component wiring.", code: STEP2, lang: "typescript" },
     { n: "03", title: "Render", desc: "Drop in DynamicForm with your schema and an onSubmit handler. Done.", code: STEP3, lang: "tsx" },
   ];
@@ -633,7 +633,7 @@ function Footer({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
               ⬡
             </div>
             <div>
-              <p className="font-semibold text-sm font-mono text-zinc-300">form-engine-react</p>
+              <p className="font-semibold text-sm font-mono text-zinc-300">ReactFill</p>
               <p className="text-xs text-zinc-600 mt-0.5">MIT License · Built with React Hook Form</p>
             </div>
           </div>
@@ -655,7 +655,7 @@ function Footer({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
               GitHub
             </a>
             <a
-              href="https://www.npmjs.com/package/form-engine-react"
+              href="https://www.npmjs.com/package/react-fill"
               target="_blank"
               rel="noreferrer"
               className="hover:text-zinc-300 transition-colors"

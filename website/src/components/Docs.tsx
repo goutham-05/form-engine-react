@@ -206,11 +206,11 @@ const FIELD_TYPES_DATA = [
 // ─── Code samples ──────────────────────────────────────────────────────────────
 
 const QUICK_START_CODE = `# 1. Install
-npm install form-engine-react
+npm install react-fill
 
 // 2. Define a schema
-import { DynamicForm } from "form-engine-react";
-import type { FormFieldSchema } from "form-engine-react";
+import { DynamicForm } from "react-fill";
+import type { FormFieldSchema } from "react-fill";
 
 const schema: FormFieldSchema[] = [
   { name: "firstName", label: "First Name", type: "text", required: true },
@@ -337,8 +337,8 @@ const VALIDATION_CODE = `const schema: FormFieldSchema[] = [
   },
 ];`;
 
-const FORM_THEME_CODE = `import { DynamicForm } from "form-engine-react";
-import type { FormTheme } from "form-engine-react";
+const FORM_THEME_CODE = `import { DynamicForm } from "react-fill";
+import type { FormTheme } from "react-fill";
 
 const theme: FormTheme = {
   unstyled: true,
@@ -356,8 +356,8 @@ const theme: FormTheme = {
 
 <DynamicForm schema={schema} theme={theme} onSubmit={fn} />`;
 
-const WIZARD_CODE = `import { FormWizard } from "form-engine-react";
-import type { FormFieldSchema } from "form-engine-react";
+const WIZARD_CODE = `import { FormWizard } from "react-fill";
+import type { FormFieldSchema } from "react-fill";
 
 const steps: { label: string; fields: FormFieldSchema[] }[] = [
   {
@@ -395,8 +395,8 @@ export default function SignupWizard() {
 }`;
 
 const PROGRAMMATIC_CODE = `import { useRef } from "react";
-import { DynamicForm } from "form-engine-react";
-import type { DynamicFormHandle, FormFieldSchema } from "form-engine-react";
+import { DynamicForm } from "react-fill";
+import type { DynamicFormHandle, FormFieldSchema } from "react-fill";
 
 const schema: FormFieldSchema[] = [
   { name: "email",    label: "Email",    type: "email",  required: true },
@@ -617,7 +617,7 @@ export default function Docs({ onBack }: DocsProps) {
             title="Field Types"
           >
             <Prose>
-              form-engine-react supports 15 field types out of the box. Each type maps directly to the{" "}
+              ReactFill supports 15 field types out of the box. Each type maps directly to the{" "}
               <code className="text-zinc-300 bg-zinc-800/80 px-1.5 py-0.5 rounded text-xs">type</code> property in the schema.
             </Prose>
             <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">

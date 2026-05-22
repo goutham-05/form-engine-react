@@ -1,4 +1,4 @@
-# form-engine-react
+# ReactFill
 
 A schema-driven dynamic form builder for React. Pass a JSON array, get a fully functional form — no boilerplate, no repetition, works with any CSS framework.
 
@@ -29,7 +29,7 @@ Built on [React Hook Form](https://react-hook-form.com/) — battle-tested form 
 ## Installation
 
 ```bash
-npm install form-engine-react
+npm install react-fill
 # peer dependencies (if not already installed)
 npm install react react-dom react-hook-form
 ```
@@ -39,7 +39,7 @@ npm install react react-dom react-hook-form
 ## Quick Start
 
 ```tsx
-import { DynamicForm, type FormFieldSchema } from "form-engine-react";
+import { DynamicForm, type FormFieldSchema } from "react-fill";
 
 const schema: FormFieldSchema[] = [
   {
@@ -424,7 +424,7 @@ Access the full React Hook Form API via `formRef` to set values, trigger validat
 
 ```tsx
 import { useRef } from "react";
-import { DynamicForm, type DynamicFormHandle } from "form-engine-react";
+import { DynamicForm, type DynamicFormHandle } from "react-fill";
 
 function MyPage() {
   const formRef = useRef<DynamicFormHandle>(null);
@@ -558,7 +558,7 @@ Renders as `<fieldset>` / `<legend>` for proper accessibility:
 ## Multi-Step Wizard
 
 ```tsx
-import { FormWizard } from "form-engine-react";
+import { FormWizard } from "react-fill";
 
 const steps = [
   {
@@ -763,7 +763,7 @@ Issues and pull requests are welcome. Please open an issue first for significant
 
 ```bash
 git clone https://github.com/goutham-05/form-engine-react
-cd form-engine-react
+cd react-fill
 npm install
 npm test        # vitest — 48 tests
 npm run build   # tsup — ESM + CJS + .d.ts

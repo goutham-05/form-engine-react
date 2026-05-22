@@ -75,7 +75,7 @@ function fieldToObject(f: FieldConfig, indent = 2): string {
 export function generateSchemaCode(fields: FieldConfig[]): string {
   if (fields.length === 0) {
     return [
-      `import type { FormFieldSchema } from "form-engine-react";`,
+      `import type { FormFieldSchema } from "react-fill";`,
       ``,
       `const schema: FormFieldSchema[] = [];`,
       ``,
@@ -83,7 +83,7 @@ export function generateSchemaCode(fields: FieldConfig[]): string {
   }
   const body = fields.map((f) => fieldToObject(f)).join(",\n");
   return [
-    `import type { FormFieldSchema } from "form-engine-react";`,
+    `import type { FormFieldSchema } from "react-fill";`,
     ``,
     `const schema: FormFieldSchema[] = [`,
     `${body},`,
@@ -101,8 +101,8 @@ export function generateUsageCode(fields: FieldConfig[], columns = 1): string {
   const columnsLine = columns > 1 ? `\n      columns={${columns}}` : "";
 
   return [
-    `import { DynamicForm } from "form-engine-react";`,
-    `import type { FormFieldSchema } from "form-engine-react";`,
+    `import { DynamicForm } from "react-fill";`,
+    `import type { FormFieldSchema } from "react-fill";`,
     ``,
     `const schema: FormFieldSchema[] = ${schemaBody};`,
     ``,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { DynamicForm } from "form-engine-react";
-import type { FormFieldSchema, FormTheme } from "form-engine-react";
+import { DynamicForm } from "react-fill";
+import type { FormFieldSchema, FormTheme } from "react-fill";
 // @ts-ignore
 import SyntaxHighlighter from "react-syntax-highlighter";
 // @ts-ignore
@@ -124,7 +124,7 @@ const SCHEMA_CODE = `const schema: FormFieldSchema[] = [
   },
 ];`;
 
-const RENDER_CODE = `import { DynamicForm } from "form-engine-react";
+const RENDER_CODE = `import { DynamicForm } from "react-fill";
 
 <DynamicForm
   schema={schema}

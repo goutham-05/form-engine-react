@@ -15,7 +15,10 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "paths": {
-      "form-engine-react": ["../src/index.ts"]
+      "react-fill": ["../src/index.ts"],
+      "FormEngine": ["../src/FormEngine.tsx"],
+      "DynamicForm/*": ["../src/DynamicForm/*"],
+      "index": ["../src/index.ts"]
     }
   },
   "include": ["src"]
