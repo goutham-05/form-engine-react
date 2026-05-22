@@ -6,7 +6,7 @@ import { useFormTheme, cx } from "../theme/FormTheme";
 import { RequiredMark } from "../utils/RequiredMark";
 
 interface DateFieldProps {
-  field: FormFieldSchema & { min?: string; max?: string };
+  field: FormFieldSchema;
   name: string;
   error?: any;
   register: any;

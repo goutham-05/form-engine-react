@@ -114,7 +114,7 @@ function Hero({ onPlayground }: { onPlayground: () => void }) {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-400 mb-8 animate-fade-in">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          v1.0.6 released — 48 tests passing
+          v1.0.6 released — 78 tests passing
         </div>
 
         {/* Headline */}
@@ -191,9 +191,9 @@ function Hero({ onPlayground }: { onPlayground: () => void }) {
         >
           {[
             { label: "Peer deps", value: "3" },
-            { label: "Bundle size", value: "~12 kB" },
-            { label: "Tests passing", value: "48" },
-            { label: "Field types", value: "10+" },
+            { label: "Bundle size", value: "~13 kB" },
+            { label: "Tests passing", value: "78" },
+            { label: "Field types", value: "15" },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -429,7 +429,7 @@ function ThemeShowcase() {
 
         <div className="mt-8 grid sm:grid-cols-3 gap-4 text-center">
           {[
-            { emoji: "🎨", label: "16 theme slots", desc: "Every element is addressable" },
+            { emoji: "🎨", label: "17 theme slots", desc: "Every element is addressable" },
             { emoji: "🔒", label: "unstyled mode", desc: "Zero inline styles applied" },
             { emoji: "🧩", label: "Per-field overrides", desc: "inputClass, wrapperClass, etc." },
           ].map((item) => (

@@ -200,7 +200,7 @@ const FIELD_TYPES_DATA = [
   { type: "fieldArray", color: "bg-rose-500/20 text-rose-300",    desc: "Dynamic repeater rows",            keyProps: "children, addButtonLabel" },
   { type: "group",      color: "bg-orange-500/20 text-orange-300",desc: "Logical fieldset group",           keyProps: "children" },
   { type: "multiField", color: "bg-fuchsia-500/20 text-fuchsia-300",desc: "Inline multi-part field",        keyProps: "children" },
-  { type: "wizard",     color: "bg-purple-500/20 text-purple-300",desc: "Multi-step wizard step",           keyProps: "label, children" },
+  { type: "FormWizard", color: "bg-purple-500/20 text-purple-300",desc: "Multi-step wizard (top-level component, not a field type)", keyProps: "steps, onSubmit" },
 ];
 
 // ─── Code samples ──────────────────────────────────────────────────────────────

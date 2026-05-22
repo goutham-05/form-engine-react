@@ -6,7 +6,7 @@ import { useFormTheme, cx } from "../theme/FormTheme";
 import { RequiredMark } from "../utils/RequiredMark";
 
 interface RatingFieldProps {
-  field: FormFieldSchema & { max?: number };
+  field: FormFieldSchema;
   name: string;
   error?: any;
   register: any;
@@ -14,7 +14,7 @@ interface RatingFieldProps {
 
 const RatingFieldComponent: React.FC<RatingFieldProps> = ({ field, name, error }) => {
   const { setValue, getValues, trigger, control } = useFormContext();
-  const starCount = field.starCount ?? field.max ?? 5;
+  const starCount = field.starCount ?? (field.max as number | undefined) ?? 5;
 
   const { field: controllerField } = useController({
     name,

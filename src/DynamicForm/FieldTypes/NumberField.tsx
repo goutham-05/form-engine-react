@@ -112,6 +112,10 @@ const NumberFieldComponent: React.FC<NumberFieldProps> = ({ field, name, error }
           }
           field.onKeyDown?.(e);
         }}
+        min={field.min as number | undefined}
+        max={field.max as number | undefined}
+        step={field.step}
+        readOnly={field.readOnly}
         className={cx(theme.inputClass, error ? theme.inputErrorClass : undefined, field.inputClass)}
         style={inputStyle}
         disabled={field.disabled}

@@ -1,13 +1,13 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { DynamicForm } from "./index";
-import type { FormFieldSchema } from "./index";
+import type { FormFieldSchema, SubmitButtonRenderProps } from "./index";
 
 const meta: Meta<typeof DynamicForm> = {
   title: "DynamicForm",
   component: DynamicForm,
   args: {
-    onSubmit: (data) => alert(JSON.stringify(data, null, 2)),
+    onSubmit: (data: Record<string, unknown>) => alert(JSON.stringify(data, null, 2)),
     submitLabel: "Submit",
   },
   argTypes: {
@@ -295,9 +295,9 @@ export const CustomSubmitButton: Story = {
       { name: "email", label: "Email", type: "email", required: true, placeholder: "you@example.com" },
       { name: "message", label: "Message", type: "textarea", rows: 3, required: true },
     ] satisfies FormFieldSchema[],
-    onSubmit: (data) =>
-      new Promise((res) => setTimeout(() => { alert(JSON.stringify(data, null, 2)); res(undefined); }, 1500)),
-    renderSubmitButton: ({ isSubmitting, isValid, isDirty, label }) => (
+    onSubmit: (data: Record<string, unknown>) =>
+      new Promise<void>((res) => setTimeout(() => { alert(JSON.stringify(data, null, 2)); res(); }, 1500)),
+    renderSubmitButton: ({ isSubmitting, isValid, isDirty, label }: SubmitButtonRenderProps) => (
       <button
         type="submit"
         disabled={isSubmitting || !isDirty}

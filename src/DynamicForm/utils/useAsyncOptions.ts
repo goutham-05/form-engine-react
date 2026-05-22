@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import { useWatch, useFormContext } from "react-hook-form";
 import type { FormFieldSchema } from "../types/FormFieldSchema";
 
-export type AsyncOption = { label: string; value: string };
+export type AsyncOption = {
+  label: string;
+  value: string;
+  helpText?: string;
+  disabled?: boolean;
+  tooltip?: string;
+  helpTextAlignment?: "underLabel" | "underButton";
+};
 
 /**
  * Resolves options for select / radio / checkbox fields.

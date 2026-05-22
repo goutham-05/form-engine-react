@@ -130,6 +130,7 @@ const TextFieldComponent: React.FC<TextFieldProps> = ({ field, name, error }) =>
         className={cx(theme.inputClass, error ? theme.inputErrorClass : undefined, field.inputClass)}
         style={inputStyle}
         disabled={field.disabled}
+        readOnly={field.readOnly}
       />
 
       {helpTextPosition !== "underLabel" && field.helpText && (

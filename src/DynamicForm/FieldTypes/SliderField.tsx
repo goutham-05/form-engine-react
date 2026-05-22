@@ -6,7 +6,7 @@ import { useFormTheme, cx } from "../theme/FormTheme";
 import { RequiredMark } from "../utils/RequiredMark";
 
 interface SliderFieldProps {
-  field: FormFieldSchema & { min?: number; max?: number; step?: number };
+  field: FormFieldSchema;
   name: string;
   error?: any;
   register: any;
@@ -14,8 +14,8 @@ interface SliderFieldProps {
 
 const SliderFieldComponent: React.FC<SliderFieldProps> = ({ field, name, error }) => {
   const { setValue, getValues, trigger, control } = useFormContext();
-  const min = field.min ?? 0;
-  const max = field.max ?? 100;
+  const min = (field.min as number) ?? 0;
+  const max = (field.max as number) ?? 100;
   const step = field.step ?? 1;
 
   const { field: controllerField } = useController({

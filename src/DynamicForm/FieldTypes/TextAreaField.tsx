@@ -93,8 +93,10 @@ const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({ field, name, err
           aria-disabled={field.disabled}
           aria-describedby={field.helpText ? `${name}-description` : undefined}
           value={value}
+          rows={field.rows}
           minLength={field.minLength}
           maxLength={field.maxLength}
+          readOnly={field.readOnly}
           onChange={handleChange}
           onBlur={(e) => {
             controllerField.onBlur();

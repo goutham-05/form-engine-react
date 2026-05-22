@@ -31,6 +31,9 @@ export interface FormFieldSchema {
   /** Disable user interaction. */
   disabled?: boolean;
 
+  /** Make the field read-only (value visible but not editable). */
+  readOnly?: boolean;
+
   /** HTML input placeholder. */
   placeholder?: string;
 
@@ -147,6 +150,20 @@ export interface FormFieldSchema {
 
   /** Show word count below a textarea. */
   showWordCount?: boolean;
+
+  /** Number of visible text rows (textarea only). */
+  rows?: number;
+
+  // ─── Number / Date / Slider ───────────────────────────────────────────────
+
+  /** Minimum allowed value. Used by number, date, and slider fields. */
+  min?: number | string;
+
+  /** Maximum allowed value. Used by number, date, and slider fields. */
+  max?: number | string;
+
+  /** Increment step. Used by number and slider fields. */
+  step?: number;
 
   // ─── File field ──────────────────────────────────────────────────────────
   /** Accepted MIME types / extensions, e.g. "image/*,.pdf". Forwarded to the input's accept attr. */
