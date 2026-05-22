@@ -67,10 +67,10 @@ function Navbar({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
             title="View on npm"
           >
             <NpmIcon />
-            <span className="text-xs text-zinc-400 font-mono">v1.0.6</span>
+            <span className="text-xs text-zinc-400 font-mono">v1.0.0</span>
           </a>
           <a
-            href="https://github.com/goutham-05/form-engine-react"
+            href="https://github.com/goutham-05/react-fill"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800/80 hover:bg-zinc-700/80 rounded-md transition-all text-zinc-300 border border-zinc-700/50"
@@ -114,7 +114,7 @@ function Hero({ onPlayground }: { onPlayground: () => void }) {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-400 mb-8 animate-fade-in">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          v1.0.6 released — 78 tests passing
+          v1.0.0 released — 78 tests passing
         </div>
 
         {/* Headline */}
@@ -174,7 +174,7 @@ function Hero({ onPlayground }: { onPlayground: () => void }) {
             See Demo ↓
           </a>
           <a
-            href="https://github.com/goutham-05/form-engine-react"
+            href="https://github.com/goutham-05/react-fill"
             target="_blank"
             rel="noreferrer"
             className="px-6 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-sm font-semibold transition-all border border-zinc-700/60 flex items-center gap-2"
@@ -646,7 +646,7 @@ function Footer({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
               ✦ Playground
             </button>
             <a
-              href="https://github.com/goutham-05/form-engine-react"
+              href="https://github.com/goutham-05/react-fill"
               target="_blank"
               rel="noreferrer"
               className="hover:text-zinc-300 transition-colors flex items-center gap-1.5"
@@ -663,7 +663,7 @@ function Footer({ onPlayground, onDocs }: { onPlayground: () => void; onDocs: ()
               npm
             </a>
             <a
-              href="https://github.com/goutham-05/form-engine-react/issues"
+              href="https://github.com/goutham-05/react-fill/issues"
               target="_blank"
               rel="noreferrer"
               className="hover:text-zinc-300 transition-colors"

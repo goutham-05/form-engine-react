@@ -551,7 +551,7 @@ export default function Docs({ onBack }: DocsProps) {
         <span className="text-sm font-semibold text-zinc-100">Documentation</span>
         <div className="flex-1" />
         <a
-          href="https://github.com/goutham-05/form-engine-react"
+          href="https://github.com/goutham-05/react-fill"
           target="_blank"
           rel="noreferrer"
           className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors hidden sm:block"

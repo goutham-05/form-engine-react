@@ -762,10 +762,10 @@ const schema: FormFieldSchema[] = [
 Issues and pull requests are welcome. Please open an issue first for significant changes so we can discuss the approach.
 
 ```bash
-git clone https://github.com/goutham-05/form-engine-react
+git clone https://github.com/goutham-05/react-fill
 cd react-fill
 npm install
-npm test        # vitest — 48 tests
+npm test        # vitest — 78 tests
 npm run build   # tsup — ESM + CJS + .d.ts
 ```
 

@@ -1,6 +1,6 @@
 ---
 name: 🐞 Bug Report
-about: Report a problem with form-engine-react
+about: Report a problem with ReactFill
 title: "[Bug] "
 labels: bug
 assignees: goutham-05
