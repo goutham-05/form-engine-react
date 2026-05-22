@@ -1,0 +1,19 @@
+[14:38:02.369] [INFO] storybook v10.4.0
+[14:38:02.563] [DEBUG] Getting package.json info for /Users/mmv6430/Desktop/Projects/EMU/form-engine-react/package.json...
+[14:38:02.777] [INFO] Starting...
+[14:38:02.849] [DEBUG] Starting preview..
+[14:38:02.859] [DEBUG] Using tsconfig paths for react-docgen
+[14:38:02.859] [ERROR] Failed to build the preview
+[14:38:02.861] [ERROR] [38;2;241;97;97mReferenceError: __dirname is not defined[39m
+    at Object.viteFinal (file://./.storybook/main.ts:13:33)
+    at file://./node_modules/storybook/dist/_node-chunks/chunk-WKCYHYMS.js:9190:36
+    at async createViteServer (file://./node_modules/@storybook/builder-vite/dist/index.js:1575:21)
+    at async Module.start (file://./node_modules/@storybook/builder-vite/dist/index.js:1606:17)
+    at async storybookDevServer (file://./node_modules/storybook/dist/core-server/index.js:18917:158)
+    at async buildOrThrow (file://./node_modules/storybook/dist/core-server/index.js:8205:12)
+    at async buildDevStandalone (file://./node_modules/storybook/dist/core-server/index.js:19478:41)
+    at async withTelemetry (file://./node_modules/storybook/dist/_node-chunks/chunk-OQIYQ5CW.js:655:12)
+    at async dev (file://./node_modules/storybook/dist/bin/core.js:2736:3)
+    at async _Command.<anonymous> (file://./node_modules/storybook/dist/bin/core.js:2806:92)
+[14:38:02.863] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.

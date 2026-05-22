@@ -7,7 +7,13 @@ export const FIELD_TYPES = {
   GROUP: "group",
   RADIO: "radio",
   TEXTAREA: "textarea",
-  ADDITIONAL_EMAIL: "additionalEmail"
+  DATE: "date",
+  FILE: "file",
+  SLIDER: "slider",
+  RATING: "rating",
+  FIELD_ARRAY: "fieldArray",
+  ADDITIONAL_EMAIL: "additionalEmail",
+  MULTI_FIELD: "multiField"
 } as const;
 
 export type FieldType = (typeof FIELD_TYPES)[keyof typeof FIELD_TYPES];

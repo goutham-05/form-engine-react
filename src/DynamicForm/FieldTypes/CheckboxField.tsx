@@ -1,6 +1,11 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useFormContext, useController } from "react-hook-form";
 import { FormFieldSchema } from "../types/FormFieldSchema";
+import { useDebounce } from "../utils/useDebounce";
+import { resolveErrorMessage } from "../utils/errorUtils";
+import { useFormTheme, cx } from "../theme/FormTheme";
+import { RequiredMark } from "../utils/RequiredMark";
+import { useAsyncOptions } from "../utils/useAsyncOptions";
 
 interface CheckboxFieldProps {
   field: FormFieldSchema;
@@ -9,21 +14,15 @@ interface CheckboxFieldProps {
   error?: any;
 }
 
-const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
-  field,
-  name,
-  error
-}) => {
+const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({ field, name, error }) => {
   const { control, setValue, getValues, trigger } = useFormContext();
-  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { trigger: triggerDebounce } = useDebounce();
+  const theme = useFormTheme();
   const isDarkMode = field.theme === "dark";
+  const isUnstyled = theme.unstyled;
+  const { options, loading, fetchError } = useAsyncOptions(field);
 
-  React.useEffect(() => {
-    return () => {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    };
-  }, []);
+  const isGroup = !!(field.options || field.getOptions || field.apiEndpoint);
 
   const {
     field: controllerField,
@@ -31,41 +30,20 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
   } = useController({
     name,
     control,
-    defaultValue: field.defaultValue ?? (field.options ? [] : false),
-    rules: {
-      required: field.required,
-      validate: field.validation?.custom
-    }
+    defaultValue: field.defaultValue ?? (isGroup ? [] : false),
+    rules: { required: field.required, validate: field.validation?.custom }
   });
-
-  const getAutoErrorMessage = (error: any): string => {
-    switch (error?.type) {
-      case "required":
-        return `${field.label} is required`;
-      default:
-        return "Invalid selection";
-    }
-  };
 
   const handleDebounced = (value: any) => {
     if (field.onValueChangeDebounced) {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      setLoading(true);
-      debounceTimer.current = setTimeout(async () => {
-        await field.onValueChangeDebounced?.(value, {
-          setValue,
-          getValues,
-          trigger
-        });
-        setLoading(false);
-      }, field.debounceMs ?? 500);
+      triggerDebounce(
+        () => field.onValueChangeDebounced!(value, { setValue, getValues, trigger }),
+        field.debounceMs ?? 500
+      );
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    value?: string
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, value?: string) => {
     const isGroup = !!field.options?.length;
     const newValue = isGroup
       ? e.target.checked
@@ -77,144 +55,113 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
     field.onChange?.(e);
     field.onValueChange?.(newValue, { setValue, getValues, trigger });
     handleDebounced(newValue);
-
-    if ((error || controllerError) && field.showErrorOnBlur) {
-      trigger(name);
-    }
+    if ((error || controllerError) && field.showErrorOnBlur) trigger(name);
   };
 
-  const inputStyle = {
-    width: "16px",
-    height: "16px",
-    accentColor: "#004DB2",
+  const hasError = !!(error || controllerError);
+
+  const inputStyle = isUnstyled ? field.inputStyle : {
+    width: "16px", height: "16px", accentColor: "#004DB2",
     cursor: field.disabled ? "not-allowed" : "pointer",
     ...field.inputStyle
   };
-
-  const labelStyle = field.labelStyle ?? {
-    fontSize: "14px",
-    color: isDarkMode ? "#e5e7eb" : "#333"
-  };
-
-  const helpTextStyle = field.helpTextStyle ?? {
-    fontSize: "12px",
-    marginTop: "4px",
-    color: isDarkMode ? "#9ca3af" : "#6b7280"
-  };
-
-  const errorStyle = field.errorStyle ?? {
-    color: "#d93025",
-    marginTop: "6px",
-    fontSize: "13px"
-  };
-
-  const wrapperStyle = field.wrapperStyle ?? { marginBottom: "1rem" };
-
-  const optionWrapperStyle = field.optionWrapperStyle ?? {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px"
-  };
-
-  const checkBoxGroupStyle = field.checkBoxGroupStyle ?? {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.75rem"
-  };
-
-  const isGroup = !!field.options?.length;
+  const labelStyle = field.labelStyle ?? (isUnstyled ? undefined : {
+    fontSize: "14px", color: isDarkMode ? "#e5e7eb" : "#333"
+  });
+  const helpTextStyle = field.helpTextStyle ?? (isUnstyled ? undefined : {
+    fontSize: "12px", marginTop: "4px", color: isDarkMode ? "#9ca3af" : "#6b7280"
+  });
+  const errorStyle = field.errorStyle ?? (isUnstyled ? undefined : { color: "#d93025", marginTop: "6px", fontSize: "13px" });
+  const wrapperStyle = field.wrapperStyle ?? (isUnstyled ? undefined : { marginBottom: "1rem" });
+  const checkBoxGroupStyle = field.checkBoxGroupStyle ?? (isUnstyled ? undefined : {
+    display: "flex", flexDirection: "column" as const, gap: "0.75rem"
+  });
+  const optionWrapperStyle = field.optionWrapperStyle ?? (isUnstyled ? undefined : {
+    display: "flex", alignItems: "center", gap: "8px"
+  });
 
   return (
-    <div className={field.wrapperClass ?? ""} style={wrapperStyle}>
+    <div className={cx(theme.wrapperClass, field.wrapperClass)} style={wrapperStyle}>
       {(field.checkboxLabel ?? field.label) && (
         <label
           htmlFor={name}
-          className={field.labelClass ?? ""}
+          className={cx(theme.labelClass, field.labelClass)}
           style={labelStyle}
         >
           {field.checkboxLabel ?? field.label}
+          {field.required && <RequiredMark isUnstyled={isUnstyled} className={theme.requiredMarkClass} />}
         </label>
       )}
 
       <div
-        className={field.checkboxGroupClass ?? ""}
+        className={cx(theme.checkboxGroupClass, field.checkboxGroupClass)}
         style={isGroup ? checkBoxGroupStyle : optionWrapperStyle}
       >
         {isGroup ? (
-          field.options?.map((opt) => {
-            const isChecked = controllerField.value?.includes(opt.value);
-            const inputId = `${name}-${opt.value}`;
-            const helpTextAlignment = opt.helpTextAlignment ?? "underLabel";
+          loading ? (
+            <span style={isUnstyled ? undefined : { fontSize: "13px", color: "#6b7280" }}>
+              Loading options…
+            </span>
+          ) : fetchError ? (
+            <span style={isUnstyled ? undefined : { fontSize: "13px", color: "#d97706" }}>
+              {fetchError}
+            </span>
+          ) : (
+            options.map((opt) => {
+              const isChecked = controllerField.value?.includes(opt.value);
+              const inputId = `${name}-${opt.value}`;
+              const helpTextAlignment = opt.helpTextAlignment ?? "underLabel";
 
-            return (
-              <div
-                key={opt.value}
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <label
-                  htmlFor={inputId}
-                  className={field.optionWrapperClass ?? ""}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: field.disabled ? "not-allowed" : "pointer"
-                  }}
-                  title={opt.tooltip}
-                >
-                  <input
-                    id={inputId}
-                    type="checkbox"
-                    value={opt.value}
-                    checked={isChecked}
-                    onChange={(e) => handleChange(e, opt.value)}
-                    onBlur={() => {
-                      if (field.showErrorOnBlur) trigger(name);
-                    }}
-                    className={field.inputClass ?? ""}
-                    style={inputStyle}
-                    disabled={field.disabled || opt.disabled}
-                    aria-describedby={
-                      opt.helpText ? `${inputId}-desc` : undefined
-                    }
-                  />
-                  <span>{opt.label}</span>
-                </label>
-                {opt.helpText && (
-                  <div
-                    id={`${inputId}-desc`}
-                    role="note"
-                    style={{
-                      ...helpTextStyle,
-                      marginLeft:
-                        helpTextAlignment === "underLabel" ? "24px" : "0"
-                    }}
+              return (
+                <div key={opt.value} style={{ display: "flex", flexDirection: "column" }}>
+                  <label
+                    htmlFor={inputId}
+                    className={cx(theme.optionWrapperClass, field.optionWrapperClass)}
+                    style={{ display: "flex", alignItems: "center", gap: "8px", cursor: field.disabled ? "not-allowed" : "pointer" }}
+                    title={opt.tooltip}
                   >
-                    {opt.helpText}
-                  </div>
-                )}
-              </div>
-            );
-          })
+                    <input
+                      id={inputId}
+                      type="checkbox"
+                      value={opt.value}
+                      checked={isChecked}
+                      onChange={(e) => handleChange(e, opt.value)}
+                      onBlur={() => { if (field.showErrorOnBlur) trigger(name); }}
+                      className={cx(theme.inputClass, field.inputClass)}
+                      style={inputStyle}
+                      disabled={field.disabled || opt.disabled}
+                      aria-describedby={opt.helpText ? `${inputId}-desc` : undefined}
+                    />
+                    <span>{opt.label}</span>
+                  </label>
+                  {opt.helpText && (
+                    <div
+                      id={`${inputId}-desc`}
+                      role="note"
+                      style={{ ...helpTextStyle, marginLeft: helpTextAlignment === "underLabel" ? "24px" : "0" }}
+                    >
+                      {opt.helpText}
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )
         ) : (
           <label
-            className={field.optionWrapperClass ?? ""}
+            className={cx(theme.optionWrapperClass, field.optionWrapperClass)}
             style={optionWrapperStyle}
           >
             <input
               id={name}
               type="checkbox"
-              className={field.inputClass ?? ""}
+              className={cx(theme.inputClass, field.inputClass)}
               style={inputStyle}
               checked={!!controllerField.value}
               onChange={(e) => handleChange(e)}
-              onBlur={() => {
-                if (field.showErrorOnBlur) trigger(name);
-              }}
+              onBlur={() => { if (field.showErrorOnBlur) trigger(name); }}
               disabled={field.disabled}
-              aria-describedby={
-                field.helpText ? `${name}-description` : undefined
-              }
+              aria-describedby={field.helpText ? `${name}-description` : undefined}
             />
             <span>{field.label}</span>
           </label>
@@ -224,19 +171,16 @@ const CheckboxFieldComponent: React.FC<CheckboxFieldProps> = ({
       {field.helpText && (
         <p
           id={`${name}-description`}
-          className={field.helpTextClass ?? ""}
+          className={cx(theme.helpTextClass, field.helpTextClass)}
           style={helpTextStyle}
         >
           {field.helpText}
         </p>
       )}
 
-      {(error || controllerError) && (
-        <p className={field.errorClass ?? ""} style={errorStyle} role="alert">
-          {field.errorText ||
-            field.getErrorMessage?.(error || controllerError) ||
-            (error || controllerError)?.message ||
-            getAutoErrorMessage(error || controllerError)}
+      {hasError && (
+        <p className={cx(theme.errorClass, field.errorClass)} style={errorStyle} role="alert">
+          {resolveErrorMessage(error || controllerError, field)}
         </p>
       )}
     </div>

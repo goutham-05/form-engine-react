@@ -1,4 +1,3 @@
-// tsup.config.ts
 import { defineConfig } from "tsup";
 
 export default defineConfig({
@@ -8,7 +7,9 @@ export default defineConfig({
   splitting: false,
   clean: true,
   outDir: "dist",
-  legacyOutput: false, 
+  // Never bundle peer dependencies — consumers provide these from their own app
+  external: ["react", "react-dom", "react-hook-form"],
+  legacyOutput: false,
   esbuildOptions(options, context) {
     if (context.format === "esm") {
       options.outExtension = { ".js": ".mjs" };

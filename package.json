@@ -1,7 +1,7 @@
 {
   "name": "form-engine-react",
-  "version": "1.0.5",
-  "description": "A schema-driven dynamic form builder for React",
+  "version": "1.0.6",
+  "description": "A schema-driven dynamic form builder for React — CSS-framework agnostic, zero boilerplate",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,7 +26,10 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "keywords": [
     "react",
@@ -36,46 +39,54 @@
     "form-generator",
     "react-form",
     "react-hook-form",
-    "zod",
     "json-schema",
     "form-wizard",
-    "form stepper",
     "multi-step-form",
     "wizard",
-    "form designer",
-    "form creator",
-    "form schema",
-    "conditional fields",
-    "custom fields",
+    "form-schema",
+    "conditional-fields",
+    "custom-fields",
     "form-validation",
     "dynamic-fields",
     "schema-driven",
     "typescript",
-    "admin-panel",
-    "form library"
+    "headless",
+    "css-framework-agnostic"
   ],
   "author": "Goutham Posannapeta",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "@storybook/react": "^10.4.0",
+    "@storybook/react-vite": "^10.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.15.21",
     "@types/react": "^19.1.5",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^9.27.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.56.4",
+    "storybook": "^10.4.0",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "vitest": "^3.1.4"
   },
-  "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-hook-form": "^7.56.4",
-    "zod": "^3.25.28"
-  },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-hook-form": "^7.0.0",
-    "zod": "^3.0.0"
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0",
+    "react-hook-form": "^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "@testing-library/dom": "^10.4.1"
   }
 }
